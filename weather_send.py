@@ -95,3 +95,4 @@ if __name__ == "__main__":
     if '雨' in ww:
         sendMail(content)
         print("DONE!")
+
