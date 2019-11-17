@@ -9,8 +9,9 @@ from email.header import Header
 
 print('------Weather Forecast------')
 def get_weather_data() :
-    city_name = input('name of city: ')
-    #city_name = '北京'
+    #city_name = input('name of city: ')
+    city_name = '北京'
+    #city_name = '长沙'
     url1 = 'http://wthrcdn.etouch.cn/weather_mini?city='+urllib.parse.quote(city_name)
     url2 = 'http://wthrcdn.etouch.cn/weather_mini?citykey=101010100'
     #网址1只需要输入城市名，网址2需要输入城市代码
@@ -31,6 +32,7 @@ def show_weather(weather_data):
     elif weather_dict.get('desc') =='OK':
         forecast = weather_dict.get('data').get('forecast')
         b_flag = '***********************************' + '\n'
+        print('***********************************')
         print('城市：',weather_dict.get('data').get('city'))
         print('温度：',weather_dict.get('data').get('wendu')+'℃ ')
         print('感冒：',weather_dict.get('data').get('ganmao'))
@@ -40,16 +42,15 @@ def show_weather(weather_data):
         print('低温：',forecast[0].get('low'))
         print('天气：',forecast[0].get('type'))
         print('日期：',forecast[0].get('date'))
-        print('*******************************')
-        content0 = '城市：' + weather_dict.get('data').get('city') + '\n'
-        content1 = '温度：' + weather_dict.get('data').get('wendu')+'℃ ' + '\n'
-        content2 = '感冒：' + weather_dict.get('data').get('ganmao') + '\n'
-        content3 = '风向：' + forecast[0].get('fengxiang') + '\n'
-        content4 = '风级：' + forecast[0].get('fengli') + '\n'
-        content5 = '高温：' + forecast[0].get('high') + '\n'
-        content6 = '低温：' + forecast[0].get('low') + '\n'
-        content7 = '天气：' + forecast[0].get('type') + '\n'
-        content8 = '日期：' + forecast[0].get('date') + '\n'
+        content0 = weather_dict.get('data').get('city') + '\n'
+        content1 = weather_dict.get('data').get('wendu')+'℃ ' + '\n'
+        content2 = weather_dict.get('data').get('ganmao') + '\n'
+        content3 = forecast[0].get('fengxiang') + '\n'
+        content4 = forecast[0].get('fengli') + '\n'
+        content5 = forecast[0].get('high') + '\n'
+        content6 = forecast[0].get('low') + '\n'
+        content7 = forecast[0].get('type') + '\n'
+        content8 = forecast[0].get('date') + '\n'
         content = b_flag+content0+content1+content2+content3+content4+content5+content6+content7+content8+b_flag
         
         #next four day
@@ -66,7 +67,9 @@ def show_weather(weather_data):
 
 def sendMail(body):
     smtp_server = 'smtp.qq.com'
-    
+
+
+
     from_name = 'Weather Monitor'
     subject = "It's Raining Today!"
     mail = [
@@ -81,7 +84,7 @@ def sendMail(body):
     try:
         s = smtplib.SMTP_SSL(smtp_server,465)
         s.login(from_mail, mail_pass)
-        s.sendmail(from_mail, to_mail, msg)
+        s.sendmail(from_mail, to_mail, msg.encode('utf-8'))
         print("邮件发送成功")
         s.quit()
     except smtplib.SMTPException as e:
